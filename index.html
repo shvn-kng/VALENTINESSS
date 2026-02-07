@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Be My Valentine ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Pacifico',cursive;
+  text-align:center;
+  background:pink;
+  overflow:hidden;
+  padding-top:120px;
+}
+
+h1{font-size:42px;color:#ff2e63;}
+
+button{
+  font-size:22px;
+  padding:15px 28px;
+  margin:12px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+#yes{background:#ff2e63;color:white;}
+#no{background:gray;color:white;position:absolute;}
+
+.heart{
+  position:fixed;
+  bottom:-10px;
+  animation:float 6s linear infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-100vh);}
+}
+
+#countdown{
+  font-size:22px;
+  color:#fff;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Will you be my Valentine? 💖</h1>
+<div id="countdown"></div>
+
+<button id="yes" onclick="yesClicked()">Yes 💕</button>
+<button id="no" onmouseover="moveNo()">No 😢</button>
+
+<audio id="bgmusic" loop>
+  <source src="yoursong.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function moveNo(){
+  var btn=document.getElementById("no");
+  btn.style.left=Math.random()*80+"vw";
+  btn.style.top=Math.random()*80+"vh";
+}
+
+function yesClicked(){
+  document.body.innerHTML="<h1>YAYYY 💕</h1>";
+  setTimeout(()=>{window.location.href="gifts.html";},1500);
+}
+
+function heart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(Math.random()*20+15)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+setInterval(heart,300);
+
+const music=document.getElementById("bgmusic");
+document.body.addEventListener("click",()=>{
+  music.volume=0;
+  music.play();
+  let vol=0;
+  let fade=setInterval(()=>{
+    if(vol<1){vol+=0.02; music.volume=vol;}
+    else clearInterval(fade);
+  },200);
+},{once:true});
+
+const target=new Date("Feb 14, 2026 00:00:00").getTime();
+setInterval(()=>{
+  const now=new Date().getTime();
+  const diff=target-now;
+
+  if(diff<0){
+    document.getElementById("countdown").innerHTML="It's Valentine's Day 💘";
+    return;
+  }
+
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const m=Math.floor((diff%(1000*60*60))/(1000*60));
+  const s=Math.floor((diff%(1000*60))/1000);
+
+  document.getElementById("countdown").innerHTML=
+  "Opens in: "+d+"d "+h+"h "+m+"m "+s+"s";
+},1000);
+</script>
+
+</body>
+</html>
